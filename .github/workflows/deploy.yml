@@ -1,0 +1,11 @@
+name: Inject Secret
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace Placeholder
+        run: |
+          sed -i 's/REPLACE_ME_WITH_KEY/${{ secrets.GEMINI_API_KEY }}/g' index.html
+      # Then add steps here to deploy to GitHub Pages or your host
