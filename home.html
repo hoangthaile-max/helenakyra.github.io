@@ -262,7 +262,8 @@
                 currentStoryText = text;
                 renderStoryText(text);
             } catch (err) {
-                renderError("The magic is resting right now. Please try again later.");
+                console.error("Story Gen Error:", err);
+                renderError("The magic is resting right now. Open 'Inspect' > 'Console' (F12) to see why.");
             }
         }
 
