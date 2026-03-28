@@ -90,9 +90,10 @@
     <script>
         // --- Configuration ---
         const apiKey = "AIzaSyA3m6XzXU8G4x1w_LD6fj0fptfaRYHqycw"; 
-        // Underlying Model: Gemini 3 Fast (Falling back to stable 2.5 Flash for environment compatibility)
-        const TEXT_MODEL = "gemini-2.5-flash-preview-09-2025";
-        const TTS_MODEL = "gemini-2.5-flash-preview-tts";
+        // UPDATED MODELS: Most public keys use 'gemini-1.5-flash'. 
+        // If 1.5 doesn't work, try 'gemini-1.5-pro'.
+        const TEXT_MODEL = "gemini-1.5-flash"; 
+        const TTS_MODEL = "gemini-1.5-flash"; // Standard keys may not have access to the TTS preview yet
         const INSTAGRAM_URL = "https://www.instagram.com/helenakyra_art/";
 
         const ART_COLLECTION = [
