@@ -19,8 +19,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Peek at the file (Sanitized)
-        # This prints the line with your API key but hides the middle of it
-        # so you can see if it changed without leaking the whole key in logs.
         run: |
           grep "const apiKey" home.html | sed 's/\(.\{15\}\).*/\1... (Hidden)/'
           
