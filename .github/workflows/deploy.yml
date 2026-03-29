@@ -1,11 +1,24 @@
-name: Inject Secret
-on: [push]
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches: ["main"] # Or your default branch name
+
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Replace Placeholder
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Inject API Key
         run: |
-          sed -i 's/REPLACE_ME_WITH_KEY/${{ secrets.GEMINI_API_KEY }}/g' home.html
-      # Then add steps here to deploy to GitHub Pages or your host
+          # This line finds your placeholder and replaces it with the secret
+          sed -i "s/REPLACE_WITH_GEMINI_KEY/${{ secrets.GEMINI_API_KEY }}/g" index.html
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy
+        uses: actions/deploy-pages@v4
