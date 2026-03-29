@@ -169,7 +169,7 @@
 
             if (view === 'menu') {
                 html = `
-                    <div class="flex flex-col h-full animate-fadeIn">
+                    <div class="flex flex-col animate-fadeIn">
                         <span class="text-[#7da87b] text-xs font-bold uppercase tracking-[0.25em] mb-2">Magic Options</span>
                         <h2 class="text-3xl font-serif text-[#2d3a30] mb-8">${selectedArt.title}</h2>
                         <div class="space-y-4">
@@ -181,7 +181,7 @@
                 `;
             } else if (view === 'story-en' || view === 'story-zh') {
                 html = `
-                    <div class="flex flex-col h-full animate-fadeIn">
+                    <div class="flex flex-col animate-fadeIn">
                         <div class="flex justify-between items-start mb-4">
                             <button onclick="stopAudio(); showView('menu')" class="text-[#7da87b] text-xs font-bold uppercase tracking-[0.25em] flex items-center gap-1 hover:underline">
                                 ← Back to Options
@@ -209,7 +209,7 @@
                 `;
             } else if (view === 'about') {
                 html = `
-                    <div class="flex flex-col h-full animate-fadeIn">
+                    <div class="flex flex-col animate-fadeIn">
                         <button onclick="showView('menu')" class="text-[#7da87b] text-xs font-bold uppercase tracking-[0.25em] mb-2 flex items-center gap-1 hover:underline">← Back to Options</button>
                         <h2 class="text-3xl font-serif text-[#2d3a30] mb-4">About Helena & Kyra</h2>
                         <div class="flex-grow">
