@@ -19,9 +19,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Inject API Key
-        run: |
           # This line finds your placeholder and replaces it with the secret
-          sed -i "s/REPLACE_WITH_GEMINI_KEY/${{ secrets.GEMINI_API_KEY }}/g" home.html
+          run: sed -i "s|REPLACE_WITH_GEMINI_KEY|${{ secrets.GEMINI_API_KEY }}|g" home.html
+
 
       - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3
