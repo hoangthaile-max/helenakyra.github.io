@@ -1,30 +1,49 @@
 name: Deploy to GitHub Pages
 on:
   push:
-    branches: ["main"] # Or your default branch name
+    branches: ["main"]
+  workflow_dispatch: # Allows you to run this manually from the Actions tab
 
 permissions:
-  contents: read      # Required to "checkout" your code
-  pages: write        # Required to talk to the GitHub Pages API
-  id-token: write     # Required to verify the deployment is authentic
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
     environment:
-        name: github-pages
-        url: ${{ steps.deployment.outputs.page_url }}
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Peek at the file (Sanitized)
-        run: |
-          grep "const apiKey" home.html | sed 's/\(.\{15\}\).*/\1... (Hidden)/'
-          
       - name: Inject API Key
+        # We pass the secret as an ENV variable to keep it safe from shell characters
+        env:
+          GEMINI_SECRET: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          sed -i 's#REPLACE_WITH_GEMINI_KEY#${{ secrets.GEMINI_API_KEY }}#g' home.html
+          # 1. Check if the secret is actually there
+          if [ -z "$GEMINI_SECRET" ]; then
+            echo "❌ ERROR: The Secret 'GEMINI_API_KEY' is empty or missing in GitHub Settings!"
+            exit 1
+          fi
+
+          # 2. Show the length (Safe way to debug)
+          echo "✅ Secret found. Length is ${#GEMINI_SECRET} characters."
+
+          # 3. Perform a 'Safe' injection using a pipe | as a delimiter
+          sed -i "s|REPLACE_WITH_GEMINI_KEY|$GEMINI_SECRET|g" home.html
+
+      - name: Verify Swap (Debug)
+        run: |
+          count=$(grep -c "REPLACE_WITH_GEMINI_KEY" home.html || true)
+          if [ "$count" -eq "0" ]; then
+            echo "🎯 Success: The placeholder was replaced."
+          else
+            echo "⚠️ Warning: Placeholder still exists in the file!"
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -37,8 +56,3 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
-
-      - name: Verify Injection (Debug)
-        # This checks if the placeholder text still exists in the file.
-        # If it returns 0, the placeholder was successfully replaced.
-        run: grep -c "REPLACE_WITH_GEMINI_KEY" home.html || true
