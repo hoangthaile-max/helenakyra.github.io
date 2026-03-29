@@ -169,7 +169,7 @@
 
             if (view === 'menu') {
                 html = `
-                    <div class="flex flex-col animate-fadeIn">
+                    <div class="flex flex-col animate-fadeIn space-y-6">
                         <span class="text-[#7da87b] text-xs font-bold uppercase tracking-[0.25em] mb-2">Magic Options</span>
                         <h2 class="text-3xl font-serif text-[#2d3a30] mb-8">${selectedArt.title}</h2>
                         <div class="space-y-4">
@@ -181,7 +181,7 @@
                 `;
             } else if (view === 'story-en' || view === 'story-zh') {
                 html = `
-                    <div class="flex flex-col animate-fadeIn">
+                    <div class="flex flex-col animate-fadeIn min-h-full">
                         <div class="flex justify-between items-start mb-4">
                             <button onclick="stopAudio(); showView('menu')" class="text-[#7da87b] text-xs font-bold uppercase tracking-[0.25em] flex items-center gap-1 hover:underline">
                                 ← Back to Options
@@ -209,10 +209,10 @@
                 `;
             } else if (view === 'about') {
                 html = `
-                    <div class="flex flex-col animate-fadeIn">
+                    <div class="flex flex-col animate-fadeIn min-h-full">
                         <button onclick="showView('menu')" class="text-[#7da87b] text-xs font-bold uppercase tracking-[0.25em] mb-2 flex items-center gap-1 hover:underline">← Back to Options</button>
                         <h2 class="text-3xl font-serif text-[#2d3a30] mb-4">About Helena & Kyra</h2>
-                        <div class="flex-grow">
+                        <div class="flex-grow space-y-6 mb-8">
                             <p class="text-[#6b7c6e] leading-relaxed mb-6">Welcome to our little world of imagination. Every piece you see here is a window into our's childlike dreams, captured with paint, canvas, and plenty of heart.</p>
                             <div class="bg-[#f0f7ef] p-6 rounded-2xl border border-[#e2eddf]">
                                 <p class="text-[#4a5d4e] italic text-center">"Every child is an artist. The problem is how to remain an artist once we grow up."</p>
@@ -303,7 +303,7 @@
         }
 
         // --- Logic: Audio ---
-        async function toggleAudio() {
+       async function toggleAudio() {
             if (isSpeaking) {
                 stopAudio();
                 return;
@@ -323,8 +323,9 @@
             const instruction = isChinese ? "请用温柔亲切的声音朗读这段童话：" : "Read this story in a gentle, warm, and whimsical narrating voice:";
 
             try {
+                // FIXED: Changed method from GET to POST for the fetch request
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${TTS_MODEL}:generateContent?key=${apiKey}`, {
-                    method: 'GET',
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: `${instruction} ${currentStoryText}` }] }],
@@ -344,6 +345,7 @@
                     playExistingAudio();
                 }
             } catch (err) {
+                console.error("Audio Error:", err);
                 btn.innerHTML = `<span>Voice Error</span>`;
                 setTimeout(() => resetAudioBtn(), 2000);
             }
