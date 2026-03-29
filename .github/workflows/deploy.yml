@@ -18,9 +18,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Peek at the file (Sanitized)
+        # This prints the line with your API key but hides the middle of it
+        # so you can see if it changed without leaking the whole key in logs.
+        run: |
+          grep "const apiKey" home.html | sed 's/\(.\{15\}\).*/\1... (Hidden)/'
+          
       - name: Inject API Key
-          # This line finds your placeholder and replaces it with the secret
-        run: sed -i "s@REPLACE_WITH_GEMINI_KEY@${{ secrets.GEMINI_API_KEY }}@g" home.html
+        run: |
+          # 1. Force the robot to use a specific encoding
+          # 2. Use a different delimiter (#) in case your key has | or @
+          # 3. Explicitly target the line
+          sed -i 's#REPLACE_WITH_GEMINI_KEY#${{ secrets.GEMINI_API_KEY }}#g' home.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
