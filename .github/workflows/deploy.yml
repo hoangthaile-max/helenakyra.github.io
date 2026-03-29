@@ -26,9 +26,6 @@ jobs:
           
       - name: Inject API Key
         run: |
-          # 1. Force the robot to use a specific encoding
-          # 2. Use a different delimiter (#) in case your key has | or @
-          # 3. Explicitly target the line
           sed -i 's#REPLACE_WITH_GEMINI_KEY#${{ secrets.GEMINI_API_KEY }}#g' home.html
 
       - name: Setup Pages
