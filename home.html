@@ -281,6 +281,9 @@
 
         function renderStoryText(text) {
             const display = document.getElementById('story-display');
+            display.classList.remove('justify-center', 'items-center', 'text-center');
+            display.classList.add('justify-start', 'items-start', 'text-left');
+            
             display.innerHTML = `
                 <div class="prose prose-stone max-w-none animate-fadeIn">
                     <p class="text-lg leading-relaxed text-[#4a5d4e] font-light italic bg-[#e2eddf]/20 p-6 rounded-2xl border border-white">
